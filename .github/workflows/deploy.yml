@@ -27,8 +27,9 @@ jobs:
         # Kita hapus node_modules dev dan simpan folder yang diperlukan saja
         run: |
           npm prune --omit=dev
-          # Tambahkan flag --exclude agar tar tidak bingung dengan file dirinya sendiri
-          tar --exclude='app_artifact.tar.gz' -czf app_artifact.tar.gz
+          # Buat tar di folder sementara, lalu pindahkan kembali ke folder kerja
+          tar -czf /tmp/app_artifact.tar.gz --exclude=.git .
+          mv /tmp/app_artifact.tar.gz .
 
       - name: Upload Artifact ke GitHub
         uses: actions/upload-artifact@v4
