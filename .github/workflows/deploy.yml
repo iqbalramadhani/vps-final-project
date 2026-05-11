@@ -69,6 +69,10 @@ jobs:
             rm app_artifact.tar.gz
             
             # Restart aplikasi dengan PM2
-            pm2 delete simple-node-app || true
-            pm2 start ecosystem.config.js
+            pm2 describe simple-node-app > /dev/null
+            if [ $? -eq 0 ]; then
+              pm2 restart simple-node-app
+            else
+              pm2 start ecosystem.config.js
+            fi
             pm2 save
